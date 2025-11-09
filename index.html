@@ -1,222 +1,162 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Product Listing</title>
-  <style>
-    :root{ --bg:#f6f8fb; --card:#ffffff; --muted:#666; --accent:#2b6cb0; --gap:16px; --radius:12px; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-    body{margin:0; background:var(--bg); color:#222; padding:28px;}
-    .wrap{max-width:1200px; margin:0 auto;}
-    header{display:flex; gap:16px; align-items:center; margin-bottom:18px;}
-    h1{margin:0; font-size:1.25rem;}
-    .controls{margin-left:auto; display:flex; gap:8px; align-items:center;}
-    input[type="search"], select, input[type="number"]{ padding:10px 12px; border-radius:10px; border:1px solid #ddd; background:#fff; font-size:0.95rem; }
-    button{ background:var(--accent); color:white; border:0; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
-    .grid{ display:grid; gap:var(--gap); grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); }
-    .card{ background:var(--card); border-radius:12px; padding:12px; box-shadow:0 6px 18px rgba(20,20,40,0.06); display:flex; flex-direction:column; gap:8px; }
-    .thumb img{ width:100%; height:140px; object-fit:cover; border-radius:8px; background:#eef2ff; }
-    .pname{ font-weight:700; font-size:0.98rem; margin-top:6px; }
-    .price{ color:#0a7a3b; font-weight:800; }
-    .meta{ font-size:0.85rem; color:var(--muted); }
-    .card-footer{ margin-top:auto; display:flex; gap:8px; align-items:center; }
-    .btn-ghost{ border:1px solid #eee; background:transparent; padding:8px 10px; border-radius:10px; cursor:pointer; }
-    .empty{ padding:40px; text-align:center; color:var(--muted); }
-    .modal-back{ position:fixed; inset:0; background:rgba(8,8,20,0.5); display:none; align-items:center; justify-content:center; z-index:50; }
-    .modal{ background:var(--card); border-radius:12px; padding:18px; width:min(720px,95%); box-shadow:0 12px 40px rgba(10,10,30,0.25); }
-    @media (max-width:520px){ header{flex-direction:column; align-items:stretch; gap:12px;} .thumb img{ height:120px; } }
-    .row{display:flex; gap:8px; align-items:center;}
-    .tag{font-size:0.8rem; padding:6px 8px; background:#f1f5f9; border-radius:8px;}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>IINAYA TRADERS</title>
+<style>
+:root{ --bg:#f6f8fb; --card:#fff; --muted:#666; --accent:#2b6cb0; --gap:16px; --radius:12px; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;}
+body{margin:0; background:var(--bg); color:#111; padding:24px;}
+.wrap{max-width:1200px; margin:0 auto;}
+.header{display:flex; align-items:center; gap:16px; justify-content:space-between; margin-bottom:18px;}
+.title{display:flex; flex-direction:column;}
+.title h1{margin:0; font-size:1.6rem; letter-spacing:1px;}
+.title p{margin:4px 0 0 0; color:var(--muted);}
+.controls{display:flex; gap:8px; align-items:center;}
+input, select{padding:10px 12px; border-radius:10px; border:1px solid #ddd; background:#fff;}
+button{background:var(--accent); color:white; border:0; padding:10px 14px; border-radius:10px; cursor:pointer;}
+.grid{display:grid; gap:var(--gap); grid-template-columns: repeat(auto-fill, minmax(220px,1fr));}
+.card{background:var(--card); border-radius:12px; padding:12px; box-shadow:0 8px 18px rgba(20,20,40,0.06); display:flex; flex-direction:column; gap:8px;}
+.thumb img{width:100%; height:140px; object-fit:cover; border-radius:8px;}
+.pname{font-weight:700;}
+.price{color:#0a7a3b; font-weight:800;}
+.meta{color:var(--muted); font-size:0.9rem;}
+.card-footer{margin-top:auto; display:flex; gap:8px; align-items:center;}
+.empty{padding:40px; text-align:center; color:var(--muted);}
+.wa-btn{position:fixed; right:18px; bottom:18px; background:#2b6cb0; color:white; border-radius:999px; padding:12px 14px; display:flex; gap:8px; align-items:center; box-shadow:0 8px 24px rgba(43,108,176,0.25); text-decoration:none; z-index:60;}
+.wa-btn svg{width:20px; height:20px;}
+.modal-back{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(8,8,20,0.45); z-index:70;}
+.modal{background:var(--card); border-radius:12px; padding:18px; width:min(720px,96%);}
+@media(max-width:520px){.header{flex-direction:column; align-items:flex-start; gap:12px} .thumb img{height:120px}}
+</style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div>
-        <h1>IINAYA TRADERS Store</h1>
-        <div style="font-size:0.9rem; color:var(--muted)">Product catalog generated from your PDF with placeholder images.</div>
+    <header class="header">
+      <div class="title">
+        <h1>IINAYA TRADERS</h1>
+        <p>Your Trusted Home & Lifestyle Store</p>
       </div>
       <div class="controls">
-        <input id="q" type="search" placeholder="Search products (name / price)..." />
+        <input id="q" type="search" placeholder="Search products..." />
         <select id="sort">
-          <option value="name_asc">Sort: Name ↑</option>
-          <option value="name_desc">Sort: Name ↓</option>
-          <option value="price_asc">Sort: Price ↑</option>
-          <option value="price_desc">Sort: Price ↓</option>
+          <option value="name_asc">Name ↑</option>
+          <option value="name_desc">Name ↓</option>
+          <option value="price_asc">Price ↑</option>
+          <option value="price_desc">Price ↓</option>
         </select>
-        <input id="minp" type="number" placeholder="min ₹" style="width:92px" />
-        <input id="maxp" type="number" placeholder="max ₹" style="width:92px" />
+        <input id="minp" type="number" placeholder="min ₹" style="width:100px"/>
+        <input id="maxp" type="number" placeholder="max ₹" style="width:100px"/>
         <button id="export">Export CSV</button>
       </div>
     </header>
 
     <main>
       <div id="grid" class="grid"></div>
-      <div id="empty" class="empty" style="display:none">No products match your search/filter.</div>
+      <div id="empty" class="empty" style="display:none">No products match your search.</div>
     </main>
   </div>
 
+  <!-- WhatsApp -->
+  <a class="wa-btn" href="https://wa.me/917478009746" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.95 11.95 0 0012 0C5.373 0 .003 5.373.003 12 0 13.99.44 15.89 1.27 17.6L0 24l6.63-1.24A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12 0-3.2-1.25-6.16-3.48-8.52z" fill="white"/></svg>
+    <span style="font-weight:700;">WhatsApp</span>
+  </a>
+
+  <!-- Modal -->
   <div id="modalBack" class="modal-back" role="dialog" aria-hidden="true">
     <div class="modal" role="document">
-      <div style="display:flex; gap:12px; align-items:flex-start;">
-        <div style="width:40%; min-width:160px;">
-          <div id="modalThumb" class="thumb"><img id="modalImg" src="" alt="product image" /></div>
-        </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:40%;min-width:160px;"><img id="modalImg" src="" alt="" style="width:100%;border-radius:8px"/></div>
         <div style="flex:1;">
-          <div style="display:flex; gap:12px; align-items:flex-start;">
-            <h3 id="modalName">Product Name</h3>
-            <button id="modalClose" class="close" style="margin-left:auto; background:#eee; border-radius:8px; padding:6px 8px; cursor:pointer;">Close</button>
-          </div>
-          <div id="modalPrice" style="font-size:1.1rem; font-weight:800; margin-top:6px;">₹0</div>
-          <div id="modalDesc" class="meta" style="margin-top:10px;">Description / notes</div>
-          <div style="margin-top:14px;">
-            <button id="addCart" class="btn-ghost">Add to cart (demo)</button>
-            <button id="buyNow" style="margin-left:8px;">Buy now (demo)</button>
-          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><h3 id="modalName"></h3><button id="modalClose" style="margin-left:auto;">Close</button></div>
+          <div id="modalPrice" style="font-weight:800;margin-top:8px"></div>
+          <div id="modalDesc" class="meta" style="margin-top:8px"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
+<script>
 const products = [{"name": "120 Pcs Marker Pen Set", "price": 500, "desc": "Marker pen set — 120 pieces."}, {"name": "16 Compartment Box", "price": 70, "desc": "Plastic storage box, 16 compartments."}, {"name": "22 L Storage Box", "price": 90, "desc": "22 L storage box with lid."}, {"name": "24 Grid Storage Box", "price": 180, "desc": "24-grid organizer box."}, {"name": "24 in 1 Screwdriver Set", "price": 50, "desc": "Versatile screwdriver set."}, {"name": "24 Pcs Marker Pen Set", "price": 120, "desc": ""}, {"name": "26L With Lid Storage Box", "price": 130, "desc": ""}, {"name": "2 Compartment Box", "price": 40, "desc": ""}, {"name": "2 in 1 Green Mop", "price": null, "desc": "Price missing in source."}, {"name": "2 IN 1 HAIR COLOR STICK", "price": 90, "desc": ""}, {"name": "2 in 1 Paring Peeler Knife", "price": 40, "desc": ""}, {"name": "9pcs Nail Tool Set Green", "price": 99, "desc": ""}, {"name": "Baby Bath Sponge", "price": 25, "desc": ""}, {"name": "JUICER 400ML", "price": 230, "desc": ""}, {"name": "Star Master Lamp", "price": 150, "desc": ""}, {"name": "150 Pcs Art Set", "price": 180, "desc": ""}, {"name": "2 in 1 Window Brush", "price": 50, "desc": ""}, {"name": "Wooden Door Bell", "price": 120, "desc": ""}, {"name": "2 IN 1 WINTER SCARF", "price": 130, "desc": ""}, {"name": "2Pcs Kitchen Mats 2500gm", "price": 250, "desc": ""}, {"name": "2pc Ketchup Bottles 25ml", "price": 35, "desc": ""}, {"name": "2pc Ketchup Bottles 50ml", "price": 40, "desc": ""}, {"name": "360 TRIANGLE MOP", "price": 180, "desc": ""}, {"name": "360 TRIANGLE MOP With Box", "price": 200, "desc": ""}, {"name": "360-Flex Brush (2661)", "price": 30, "desc": ""}, {"name": "38 Cm Bedsheet Lifter", "price": 30, "desc": ""}, {"name": "3 Compartment Lunch Box", "price": 299, "desc": ""}, {"name": "3D Crystal Ball", "price": 75, "desc": ""}, {"name": "3D Design Hook patti", "price": 30, "desc": ""}, {"name": "3D REFLECTION DIYA", "price": 30, "desc": ""}, {"name": "3D Massager", "price": 70, "desc": ""}, {"name": "3D Wall Decor Sticker", "price": 30, "desc": ""}, {"name": "3 in 1 Multi Bottle Brush", "price": 40, "desc": ""}, {"name": "3in1 New Motivation Bottle", "price": 210, "desc": ""}, {"name": "3 in 1 Soap Dispenser", "price": 80, "desc": ""}, {"name": "3 in1 Tiles Cleaning Brush", "price": 70, "desc": ""}, {"name": "3 LAYER SLIDING DRAWER", "price": 450, "desc": ""}, {"name": "3Pcs welding Rod", "price": 30, "desc": ""}, {"name": "3Pcs Cloth Remote Cover", "price": 50, "desc": ""}, {"name": "3 Tier Egg Rolling Dispense", "price": 70, "desc": ""}, {"name": "44L Grey Canva With Lid", "price": 180, "desc": ""}, {"name": "48 Pcs Marker Pen Set", "price": 220, "desc": ""}, {"name": "48V washer Gun", "price": 800, "desc": ""}, {"name": "4 Grid Pen Holder", "price": 40, "desc": ""}, {"name": "4 in 1 Tiles Cleaner Brush", "price": 55, "desc": ""}, {"name": "4 In 1 bottle (60ml each)", "price": 50, "desc": ""}, {"name": "4 Layer Shoe Rack", "price": 160, "desc": ""}, {"name": "5D Water Absorbing Mat", "price": 90, "desc": ""}, {"name": "5 Layer Shoe Rack", "price": 180, "desc": ""}, {"name": "5 Meter Nylon Rope", "price": 20, "desc": ""}, {"name": "6 Layer Shoe Rack", "price": 200, "desc": ""}, {"name": "6 PCS FLOWER STICKER", "price": 100, "desc": ""}, {"name": "6Pcs Drawer Divider", "price": 50, "desc": ""}, {"name": "6 Pcs Ear Cleaner Kit", "price": 20, "desc": ""}, {"name": "6Pcs Razor Max Shaver", "price": 25, "desc": ""}, {"name": "6 Pcs Travel Bag Set", "price": 220, "desc": ""}, {"name": "6 SLOT WATCH BOX", "price": 280, "desc": ""}, {"name": "7D Realistic Mat", "price": 80, "desc": ""}, {"name": "7 Pcs Travel Storage Bag", "price": 230, "desc": ""}, {"name": "KITCHEN WIPES", "price": 70, "desc": ""}, {"name": "A1 Toothbrush Cover", "price": 25, "desc": ""}, {"name": "8Pcs Drawer Divider", "price": 70, "desc": ""}, {"name": "Ac Cover Net 1 To1.5 Ton", "price": 60, "desc": ""}, {"name": "Ac Cover Waterproof", "price": 60, "desc": ""}, {"name": "Acrylic Oil Jar Pot 250ML", "price": 130, "desc": ""}, {"name": "Addi Brush 4 in 1", "price": 25, "desc": ""}, {"name": "Tumbler with Lid", "price": 280, "desc": ""}, {"name": "Apron Adorable Dog", "price": 60, "desc": ""}, {"name": "Foam Cleaner Spray", "price": 90, "desc": ""}, {"name": "Air Gap Sealing Tape", "price": 60, "desc": ""}, {"name": "Cloth Stain Remover", "price": 25, "desc": ""}];
-    // end of product list
-    function fmtPrice(p){
-      if(p===null || p===undefined || isNaN(p)) return "—";
-      return "₹"+Number(p).toLocaleString('en-IN');
-    }
-
-    const grid = document.getElementById('grid');
-    const emptyNote = document.getElementById('empty');
-
-    function renderList(list){
-      grid.innerHTML = "";
-      if(list.length === 0){
-        emptyNote.style.display = "block";
-        return;
-      } else emptyNote.style.display = "none";
-
-      list.forEach((p, idx) => {
-        const card = document.createElement('article');
-        card.className = "card";
-        const imgSrc = `images/product-${p.__idx || (idx+1)}.svg`;
-        card.innerHTML = `
-          <div class="thumb"><img src="${imgSrc}" alt="${escapeHtml(p.name)}" /></div>
-          <div class="pname">${escapeHtml(p.name)}</div>
-          <div class="meta">${escapeHtml(p.desc || "")}</div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="price">${fmtPrice(p.price)}</div>
-            <div class="tag">${p.price && !isNaN(p.price) ? "IN STOCK" : "PRICE NA"}</div>
-          </div>
-          <div class="card-footer">
-            <button class="btn-ghost detail" data-idx="${idx}">Details</button>
-            <button class="btn-ghost" data-buy="${idx}">Buy</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    products.forEach((p,i)=>p.__idx = i+1);
-
-    const qInput = document.getElementById('q');
-    const sortSel = document.getElementById('sort');
-    const minp = document.getElementById('minp');
-    const maxp = document.getElementById('maxp');
-    [qInput, sortSel, minp, maxp].forEach(el => el.addEventListener('input', applyFilters));
-
-    function applyFilters(){
-      const q = qInput.value.trim().toLowerCase();
-      const sort = sortSel.value;
-      const min = parseFloat(minp.value);
-      const max = parseFloat(maxp.value);
-
-      let filtered = products.filter(p => {
-        const inName = p.name.toLowerCase().includes(q);
-        const inPrice = p.price !== null && String(p.price).includes(q);
-        if(q && !(inName || inPrice)) return false;
-        if(!isNaN(min) && (isNaN(p.price) || p.price < min)) return false;
-        if(!isNaN(max) && (isNaN(p.price) || p.price > max)) return false;
-        return true;
-      });
-
-      if(sort === 'name_asc') filtered.sort((a,b)=>a.name.localeCompare(b.name));
-      else if(sort === 'name_desc') filtered.sort((a,b)=>b.name.localeCompare(a.name));
-      else if(sort === 'price_asc') filtered.sort((a,b)=>((a.price||Infinity)-(b.price||Infinity)));
-      else if(sort === 'price_desc') filtered.sort((a,b)=>((b.price||-Infinity)-(a.price||-Infinity)));
-
-      renderList(filtered);
-    }
-
-    document.addEventListener('click', (e)=>{
-      const det = e.target.closest('.detail');
-      if(det){
-        const idx = Number(det.dataset.idx);
-        openModal(products[idx]);
-      }
-      const buy = e.target.closest('[data-buy]');
-      if(buy){
-        alert("Demo: Buy action for: " + products[Number(buy.dataset.buy)].name);
-      }
-      const img = e.target.closest('.thumb img');
-      if(img){
-        const src = img.getAttribute('src') || '';
-        const match = src.match(/product-(\d+)\.svg$/);
-        if(match) {
-          const id = Number(match[1]) - 1;
-          openModal(products[id]);
-        }
-      }
-    });
-
-    const modalBack = document.getElementById('modalBack');
-    const modalName = document.getElementById('modalName');
-    const modalPrice = document.getElementById('modalPrice');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalImg = document.getElementById('modalImg');
-    const modalClose = document.getElementById('modalClose');
-
-    modalClose.addEventListener('click', closeModal);
-    modalBack.addEventListener('click', (ev)=>{
-      if(ev.target === modalBack) closeModal();
-    });
-
-    function openModal(p){
-      modalName.textContent = p.name;
-      modalPrice.textContent = fmtPrice(p.price);
-      modalDesc.textContent = p.desc || "No further description available.";
-      modalImg.src = `images/product-${p.__idx}.svg`;
-      modalBack.style.display = "flex";
-      modalBack.setAttribute('aria-hidden','false');
-    }
-    function closeModal(){
-      modalBack.style.display = "none";
-      modalBack.setAttribute('aria-hidden','true');
-    }
-
-    document.getElementById('export').addEventListener('click', ()=>{
-      const rows = [
-        ["name","price","description"],
-        ...products.map(p => [p.name, p.price===null ? "" : p.price, p.desc ? p.desc.replace(/"/g,'""') : ""])
-      ];
-      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'products.csv';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    });
-
-    function escapeHtml(s){
-      if(!s) return "";
-      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-    }
-
-    applyFilters();
-  </script>
+function fmtPrice(p){ if(p===null || p===undefined || isNaN(p)) return "—"; return "₹"+Number(p).toLocaleString('en-IN'); }
+const grid = document.getElementById('grid');
+const empty = document.getElementById('empty');
+function render(list){
+  grid.innerHTML='';
+  if(list.length===0){ empty.style.display='block'; return; } else empty.style.display='none';
+  list.forEach((p,i)=>{
+    const card = document.createElement('article');
+    card.className='card';
+    const idx = i+1;
+    const img = `images/product-${p.__idx || idx}.svg`;
+    card.innerHTML = `
+      <div class="thumb"><img src="${img}" alt="${escapeHtml(p.name)}"></div>
+      <div class="pname">${escapeHtml(p.name)}</div>
+      <div class="meta">${escapeHtml(p.desc||"")}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="price">${fmtPrice(p.price)}</div>
+        <div class="tag">${p.price && !isNaN(p.price) ? "IN STOCK" : "PRICE NA"}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-ghost detail" data-idx="${i}">Details</button>
+        <button class="btn-ghost" data-buy="${i}">Buy</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+products.forEach((p,i)=>p.__idx = i+1);
+const q = document.getElementById('q');
+const sort = document.getElementById('sort');
+const minp = document.getElementById('minp');
+const maxp = document.getElementById('maxp');
+[q, sort, minp, maxp].forEach(el=>el.addEventListener('input', applyFilters));
+function applyFilters(){
+  const qv = q.value.trim().toLowerCase();
+  const s = sort.value;
+  const min = parseFloat(minp.value);
+  const max = parseFloat(maxp.value);
+  let f = products.filter(p=>{
+    const inName = p.name.toLowerCase().includes(qv);
+    const inPrice = p.price !== null && String(p.price).includes(qv);
+    if(qv && !(inName||inPrice)) return false;
+    if(!isNaN(min) && (isNaN(p.price) || p.price < min)) return false;
+    if(!isNaN(max) && (isNaN(p.price) || p.price > max)) return false;
+    return true;
+  });
+  if(s==='name_asc') f.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(s==='name_desc') f.sort((a,b)=>b.name.localeCompare(a.name));
+  else if(s==='price_asc') f.sort((a,b)=>( (a.price||Infinity)-(b.price||Infinity) ));
+  else if(s==='price_desc') f.sort((a,b)=>( (b.price||-Infinity)-(a.price||-Infinity) ));
+  render(f);
+}
+document.addEventListener('click', (e)=>{
+  const det = e.target.closest('.detail');
+  if(det){ openModal(products[Number(det.dataset.idx)]); }
+  const buy = e.target.closest('[data-buy]');
+  if(buy){ alert('Demo: Buy '+products[Number(buy.dataset.buy)].name); }
+  const img = e.target.closest('.thumb img');
+  if(img){ const src = img.getAttribute('src')||''; const m = src.match(/product-(\d+)\.svg$/); if(m){ openModal(products[Number(m[1])-1]); } }
+});
+const modalBack = document.getElementById('modalBack');
+const modalImg = document.getElementById('modalImg');
+const modalName = document.getElementById('modalName');
+const modalPrice = document.getElementById('modalPrice');
+const modalDesc = document.getElementById('modalDesc');
+const modalClose = document.getElementById('modalClose');
+modalClose.addEventListener('click', closeModal);
+modalBack.addEventListener('click', (ev)=>{ if(ev.target===modalBack) closeModal(); });
+function openModal(p){ modalName.textContent = p.name; modalPrice.textContent = fmtPrice(p.price); modalDesc.textContent = p.desc||'No description.'; modalImg.src = `images/product-${p.__idx}.svg`; modalBack.style.display='flex'; modalBack.setAttribute('aria-hidden','false'); }
+function closeModal(){ modalBack.style.display='none'; modalBack.setAttribute('aria-hidden','true'); }
+document.getElementById('export').addEventListener('click', ()=>{
+  const rows = [ ['name','price','description'], ...products.map(p=>[p.name, p.price===null?'':p.price, p.desc? p.desc.replace(/"/g,'""') : '']) ];
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='products.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+applyFilters();
+</script>
 </body>
 </html>
